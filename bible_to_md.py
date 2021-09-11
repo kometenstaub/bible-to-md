@@ -20,21 +20,21 @@ with open("bsb.csv", "r", encoding="utf-8") as csvFile:
     file_counter : int = 0
 
     for row in csvFileReader:
-        #print(row)
-        new_heading = " ".join(row[0].split(" ")[:-1])
-        #content = "\n\n".join(incremental_content)
-        incremental_content.append(f"###### {row[0]}\n\n{row[1]}")
-        # this is never true
-        if new_heading != heading:
-            content = "\n\n".join(incremental_content)
-            with open(f"data/{str(new_heading)}.md", "w", encoding="utf-8") as f:
-                f.write(content)
+        if csvFileReader.line_num > 3:
+            new_heading = " ".join(row[0].split(" ")[:-1])
+            if file_counter == 0:
+                heading = new_heading
+            if new_heading != heading and file_counter > 0:
+                content = "\n\n".join(incremental_content)
+                with open(f"data/{str(heading)}.md", "w", encoding="utf-8") as f:
+                    f.write(content)
+                content = ""
+                incremental_content = []
+            heading = new_heading
             file_counter += 1
-            content = ""
-            incremental_content = []
-        heading = new_heading
-        #incremental_content.append(f"###### {row[0]}\n\n{row[1]}")
+            incremental_content.append(f"###### {row[0]}\n\n{row[1]}")
     content = "\n\n".join(incremental_content)
-    with open(f"data/{new_heading}.md", "w", encoding="utf-8") as f:
+    with open(f"data/{heading}.md", "w", encoding="utf-8") as f:
         f.write(content)
 
+print("The script is finished, check out the markdown files in ./data/")
