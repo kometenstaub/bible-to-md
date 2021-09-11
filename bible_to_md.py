@@ -46,6 +46,7 @@ with open("bsb.csv", "r", encoding="utf-8") as csvFile:
             file_counter += 1
             incremental_content.append(f"###### {row[0]}\n\n{row[1]}")
             chapter = new_chapter
+    # for the last chapter there is no new chapter or heading to be checked
     content = "\n\n".join(incremental_content)
     with open(f"data/{heading} {chapter}.md", "w", encoding="utf-8") as f:
         f.write(content)
